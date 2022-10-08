@@ -11,5 +11,19 @@ public class App
         bool check = false;
         string response = "";
 
+        while (check != true)
+        {
+           Console.WriteLine("Entrez une lettre : ");
+           response = Console.ReadLine();
+
+           for(var i = 0 ; i<=hiddenWord.Length ; i++)
+           {
+            if (response = hiddenWord[i])
+            {
+                Console.Write("Bonne lettre : " + response);
+            }
+           }
+           check = false ;
+        }
     }
 }

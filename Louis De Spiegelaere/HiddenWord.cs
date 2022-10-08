@@ -113,7 +113,7 @@ class Game {
             this._turn++;
         }
         Console.Clear();
-        Console.WriteLine(String.Format("Dommage, le mot était [{0}].\nLa partie a dure {1}", this.word.GetWord(), this._turn));
+        Console.WriteLine(String.Format("Dommage, le mot était [{0}].\nLa partie a duré {1} tour(s)", this.word.GetWord(), this._turn));
         return false;
     }
 }

@@ -40,7 +40,7 @@ public class HiddenWord {
         Random rnd = new Random();
         return words[rnd.Next(0, words.Length)];
     }
-    public bool attempt(char c) {
+    public bool Attempt(char c) {
         bool ret = false;
         foreach (Letter l in this.value) {
             if (Char.ToLower(c) == Char.ToLower(l.Value)) {
@@ -49,7 +49,14 @@ public class HiddenWord {
         }
         return ret;
     }
-    public bool isFullyUnhidden() {
+    public string GetWord() {
+        string ret = "";
+        foreach (Letter l in this.value) {
+            ret += l.Value;
+        }
+        return ret;
+    }
+    public bool IsFullyUnhidden() {
         foreach (Letter l in this.value) {
             if (l.Hidden) return false;
         }
@@ -67,10 +74,53 @@ public class HiddenWord {
 class Game {
     public HiddenWord word;
     private int _turn;
-    private int _failures;
-    private int _successes;
-    public Game() {
-        word = new HiddenWord(new string[]{
+    private int _hp;
+    public Game(string[] words, int hp) {
+        word = new HiddenWord(words);
+        this._turn = 0;
+        this._hp = (hp <= 0) ? 1 : hp;
+    }
+    public int Turn {
+        get {
+            return this._turn;
+        }
+    }
+
+    public int Hp {
+        get {
+            return this._hp;
+        }
+    }
+    public bool Play() {
+        while (this._hp > 0) {
+            Console.Clear();
+            Console.WriteLine(String.Format("{0}. MOT CACHE : [{1}]", this._turn, this.word));
+            Console.WriteLine(String.Format("Vies restantes : {0}", this._hp));
+            Console.WriteLine("Entrez un caractère : ");
+            char input = Console.ReadKey().KeyChar;
+            Console.WriteLine();
+            if (word.Attempt(input)) {
+                Console.WriteLine("Bravo !");
+            } else {
+                this._hp--;
+                Console.WriteLine("Dommage !");
+            }
+            if (word.IsFullyUnhidden()) {
+                Console.Clear();
+                Console.WriteLine(String.Format("Félicitation, le mot était bien [{0}].\nIl vous restait {1} vie(s)", this.word, this._hp));
+                return true;
+            }
+            this._turn++;
+        }
+        Console.Clear();
+        Console.WriteLine(String.Format("Dommage, le mot était [{0}].\nLa partie a dure {1}", this.word.GetWord(), this._turn));
+        return false;
+    }
+}
+
+class Prog {
+    static void Main(string[] args) {
+        Game game = new Game(new string[]{
             "Programmation",
             "Espace",
             "De Spiegelaere",
@@ -80,42 +130,7 @@ class Game {
             "Age Of Empire 3",
             "Game Of Thrones",
             "Salle de bain"
-            });
-        this._turn = 0;
-        this._failures = 0;
-        this._successes = 0;
-    }
-    public int Turn {
-        get {
-            return this._turn;
-        }
-    }
-    public void Play() {
-        while (!word.isFullyUnhidden()) {
-            Console.Clear();
-            Console.WriteLine(String.Format("{0}. MOT CACHE : [{1}]", this._turn, this.word));
-            Console.WriteLine("Entrez un caractère : ");
-            char input = Console.ReadKey().KeyChar;
-            Console.WriteLine();
-            if (word.attempt(input)) {
-                this._successes++;
-                Console.WriteLine("Bravo !");
-            } else {
-                this._failures++;
-                Console.WriteLine("Dommage !");
-            }
-            this._turn++;
-        }
-        Console.Clear();
-        Console.WriteLine(String.Format("Félicitation, le mot était bien [{0}]. Vous avez trouvé en {1} tour(s)({2}% succes, {3}% echec)", this.word, this._turn, Math.Round(((double)this._successes / this._turn) * 100), Math.Round(((double)this._failures / this._turn) * 100)));
-    }
-}
-
-class Prog {
-    static void Main(string[] args) {
-        Game game = new Game();
+            }, 5);
         game.Play();
     }
 }
-
-/* commentaire */

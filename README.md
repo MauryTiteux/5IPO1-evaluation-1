@@ -1,4 +1,4 @@
-# 5IPO1-1 Evaluation 1
+# 5IPO1 Evaluation 1
 
 Développer une application console permettant de jouer au pendu ou au démineur.
 

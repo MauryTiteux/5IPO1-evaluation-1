@@ -1,173 +1,215 @@
-﻿using System;
-using System.Collections.Generic;
-using static System.Random;
-using System.Text;
+﻿// Variables globales
 
-namespace HangmanAppTest
-{
-    internal class Program
-    {
-        private static void printHangman(int wrong)
+int idx = 0;
+
+// Le jeu !
+
+pendu();
+
+// FONCTION
+
+void pendu(){
+
+    Console.Write("Joueur 1 : Indiquez le mot à faire deviner : ");
+    string word = Console.ReadLine();
+    char[] wordArr = word.ToCharArray();
+
+    char[] guessArr = copyArray(wordArr); 
+    initializeArr(guessArr);
+
+    char[] notIncludedArr = new char[25];
+    initializeNotInclu(notIncludedArr);
+
+    int error = 0;
+
+    Console.WriteLine("------------------------------------------------");
+    Console.WriteLine("Le jeu commence !");
+    for (int i = 0 ; i < 25 ; i++){
+
+        Console.WriteLine("\nJoueur 2 : Testez une lettre ");
+        char letter = Console.ReadKey().KeyChar;
+        Console.WriteLine();
+
+        if(!hasGuessedRight(wordArr, guessArr, letter))
         {
-            if (wrong == 0)
-            {
-                Console.WriteLine("\n+---+");
-                Console.WriteLine("    |");
-                Console.WriteLine("    |");
-                Console.WriteLine("    |");
-                Console.WriteLine("   ===");
-            }
-            else if (wrong == 1)
-            {
-                Console.WriteLine("\n+---+");
-                Console.WriteLine("O   |");
-                Console.WriteLine("    |");
-                Console.WriteLine("    |");
-                Console.WriteLine("   ===");
-            }
-            else if (wrong == 2)
-            {
-                Console.WriteLine("\n+---+");
-                Console.WriteLine("O   |");
-                Console.WriteLine("|   |");
-                Console.WriteLine("    |");
-                Console.WriteLine("   ===");
-            }
-            else if (wrong == 3)
-            {
-                Console.WriteLine("\n+---+");
-                Console.WriteLine(" O  |");
-                Console.WriteLine("/|  |");
-                Console.WriteLine("    |");
-                Console.WriteLine("   ===");
-            }
-            else if (wrong == 4)
-            {
-                Console.WriteLine("\n+---+");
-                Console.WriteLine(" O  |");
-                Console.WriteLine("/|\\ |");
-                Console.WriteLine("    |");
-                Console.WriteLine("   ===");
-            }
-            else if (wrong == 5)
-            {
-                Console.WriteLine("\n+---+");
-                Console.WriteLine(" O  |");
-                Console.WriteLine("/|\\ |");
-                Console.WriteLine("/   |");
-                Console.WriteLine("   ===");
-            }
-            else if (wrong == 6)
-            {
-                Console.WriteLine("\n+---+");
-                Console.WriteLine(" O   |");
-                Console.WriteLine("/|\\  |");
-                Console.WriteLine("/ \\  |");
-                Console.WriteLine("    ===");
-            }
+            pushToArr(letter, notIncludedArr);
+            error++;
         }
 
-        private static int printWord(List<char> guessedLetters, String randomWord)
+        printPendu(error);
+        Console.Write(guessArr);
+        Console.WriteLine();
+        if (error != 0)
         {
-            int counter = 0;
-            int rightLetters = 0;
-            Console.Write("\r\n");
-            foreach (char c in randomWord)
-            {
-                if (guessedLetters.Contains(c))
-                {
-                    Console.Write(c + " ");
-                    rightLetters += 1;
-                }
-                else
-                {
-                    Console.Write("  ");
-                }
-                counter += 1;
-            }
-            //Console.Write("\r\n");
-            return rightLetters;
+            printArr(notIncludedArr);
         }
 
-        private static void printLines(String randomWord)
+        Console.WriteLine();
+
+        if(error == 6)
         {
-            Console.Write("\r");
-            foreach (char c in randomWord)
-            {
-                Console.OutputEncoding = System.Text.Encoding.Unicode;
-                Console.Write("\u0305 ");
-            }
+            Console.WriteLine("Vous avez perdu !");
+            return;
         }
 
-        static void Main(string[] args)
+        if(hasWin(guessArr))
         {
-            Console.WriteLine("Welcome to hangman :)");
-            Console.WriteLine("-----------------------------------------");
-
-            Random random = new Random();
-            List<string> wordDictionary = new List<string> { "sunflower", "house", "diamond", "memes", "yeet", "hello", "howdy", "like", "subscribe" };
-            int index = random.Next(wordDictionary.Count);
-            String randomWord = wordDictionary[index];
-
-            foreach (char x in randomWord)
-            {
-                Console.Write("_ ");
-            }
-
-            int lengthOfWordToGuess = randomWord.Length;
-            int amountOfTimesWrong = 0;
-            List<char> currentLettersGuessed = new List<char>();
-            int currentLettersRight = 0;
-
-            while (amountOfTimesWrong != 6 && currentLettersRight != lengthOfWordToGuess)
-            {
-                Console.Write("\nLetters guessed so far: ");
-                foreach (char letter in currentLettersGuessed)
-                {
-                    Console.Write(letter + " ");
-                }
-                // Prompt user for input
-                Console.Write("\nGuess a letter: ");
-                char letterGuessed = Console.ReadLine()[0];
-                // Check if that letter has already been guessed
-                if (currentLettersGuessed.Contains(letterGuessed))
-                {
-                    Console.Write("\r\n You have already guessed this letter");
-                    printHangman(amountOfTimesWrong);
-                    currentLettersRight = printWord(currentLettersGuessed, randomWord);
-                    printLines(randomWord);
-                }
-                else
-                {
-                    // Check if letter is in randomWord
-                    bool right = false;
-                    for (int i = 0; i < randomWord.Length; i++) { if (letterGuessed == randomWord[i]) { right = true; } }
-
-                    // User is right
-                    if (right)
-                    {
-                        printHangman(amountOfTimesWrong);
-                        // Print word
-                        currentLettersGuessed.Add(letterGuessed);
-                        currentLettersRight = printWord(currentLettersGuessed, randomWord);
-                        Console.Write("\r\n");
-                        printLines(randomWord);
-                    }
-                    // User was wrong af
-                    else
-                    {
-                        amountOfTimesWrong += 1;
-                        currentLettersGuessed.Add(letterGuessed);
-                        // Update the drawing
-                        printHangman(amountOfTimesWrong);
-                        // Print word
-                        currentLettersRight = printWord(currentLettersGuessed, randomWord);
-                        Console.Write("\r\n");
-                        printLines(randomWord);
-                    }
-                }
-            }
-            Console.WriteLine("\r\nGame is over! Thank you for playing :)");
+            Console.WriteLine("Vous avez trouvé, bien joué !");
+            return;
         }
     }
 }
+
+
+char[] copyArray (char[] arr)
+{   
+    char[] copied = new char[arr.Length];
+
+    for (int i = 0 ; i < arr.Length ; i++)
+    {
+        copied[i] = arr[i];
+    }
+    return copied;
+}
+
+bool hasLetter(char l, char[] arr)
+{
+    for (int i = 0 ; i < arr.Length ; i++)
+    {
+        if (arr[i] == l) return true; 
+    }
+    return false;
+}
+
+void initializeNotInclu (char[] arr)
+{
+    for (int i = 0 ; i < arr.Length ; i++)
+    {
+        arr[i] = '\0';
+    }
+}
+
+void initializeArr (char[] arr)
+{
+    for (int x = 0 ; x < arr.Length ; x++)
+    {
+        char code = '_';
+        arr[x] = code;
+    }
+}
+
+bool hasGuessedRight (char[] wordArr, char[] guessArr, char letter)
+{  
+    if (!hasLetter(letter, wordArr)) return false;
+
+    for (int l = 0 ; l < wordArr.Length ; l++)
+    {
+        if (Char.ToLower(wordArr[l]) == Char.ToLower(letter))
+        {
+            guessArr[l] = letter;
+        }
+    }
+    return true;
+}
+
+bool pushToArr (char l, char[] arr)
+{   
+    if (hasLetter(l, arr))
+    {
+        return false;
+    }
+    arr[idx] = l;
+    idx++;
+
+    return true;
+}
+
+void printArr (char [] arr)
+{
+    Console.Write("Lettre erronée : [");
+    for(int i = 0 ; i < arr.Length ; i++)
+    {
+        if (arr[i] != '\0')
+        {
+            Console.Write(arr[i]);
+            if (arr[i+1] == '\0')
+            {
+                Console.Write("]");
+            }
+            else if (i != arr.Length - 1)
+            {
+                Console.Write(", ");
+            }
+        }
+    }
+}
+
+void printPendu (int erreur)
+{
+    if (erreur == 0)
+    {
+        Console.WriteLine("\n+---+");
+        Console.WriteLine("    |");
+        Console.WriteLine("    |");
+        Console.WriteLine("    |");
+        Console.WriteLine("   ===");
+    }
+    else if (erreur == 1)
+    {
+        Console.WriteLine("\n+---+");
+        Console.WriteLine("O   |");
+        Console.WriteLine("    |");
+        Console.WriteLine("    |");
+        Console.WriteLine("   ===");
+    }
+    else if (erreur == 2)
+    {
+        Console.WriteLine("\n+---+");
+        Console.WriteLine("O   |");
+        Console.WriteLine("|   |");
+        Console.WriteLine("    |");
+        Console.WriteLine("   ===");
+    }
+    else if (erreur == 3)
+    {
+        Console.WriteLine("\n+---+");
+        Console.WriteLine(" O  |");
+        Console.WriteLine("/|  |");
+        Console.WriteLine("    |");
+        Console.WriteLine("   ===");
+    }
+    else if (erreur == 4)
+    {
+        Console.WriteLine("\n+---+");
+        Console.WriteLine(" O  |");
+        Console.WriteLine("/|\\ |");
+        Console.WriteLine("    |");
+        Console.WriteLine("   ===");
+    }
+    else if (erreur == 5)
+    {
+        Console.WriteLine("\n+---+");
+        Console.WriteLine(" O  |");
+        Console.WriteLine("/|\\ |");
+        Console.WriteLine("/   |");
+        Console.WriteLine("   ===");
+    }
+    else if (erreur == 6)
+    {
+        Console.WriteLine("\n+---+");
+        Console.WriteLine(" O   |");
+        Console.WriteLine("/|\\  |");
+        Console.WriteLine("/ \\  |");
+        Console.WriteLine("    ===");
+    }
+}
+
+bool hasWin (char[] arr)
+{
+    for (int i = 0 ; i < arr.Length ; i++)
+    {
+        if (arr[i] == '_') return false;
+    }
+    return true;
+}
+

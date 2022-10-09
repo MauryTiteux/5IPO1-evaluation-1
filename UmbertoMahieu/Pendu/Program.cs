@@ -22,9 +22,12 @@ void pendu(){
 
     int error = 0;
 
+    Console.Clear();
+
     Console.WriteLine("------------------------------------------------");
     Console.WriteLine("Le jeu commence !");
-    for (int i = 0 ; i < 25 ; i++){
+    for (int i = 0 ; i < 25 ; i++)
+    {
 
         Console.WriteLine("\nJoueur 2 : Testez une lettre ");
         char letter = Console.ReadKey().KeyChar;
@@ -35,7 +38,7 @@ void pendu(){
             pushToArr(letter, notIncludedArr);
             error++;
         }
-
+        Console.Clear();
         printPendu(error);
         Console.Write(guessArr);
         Console.WriteLine();
@@ -57,6 +60,7 @@ void pendu(){
             Console.WriteLine("Vous avez trouvé, bien joué !");
             return;
         }
+        
     }
 }
 
@@ -76,7 +80,7 @@ bool hasLetter(char l, char[] arr)
 {
     for (int i = 0 ; i < arr.Length ; i++)
     {
-        if (arr[i] == l) return true; 
+        if (Char.ToLower(arr[i]) == Char.ToLower(l)) return true; 
     }
     return false;
 }

@@ -2,9 +2,22 @@
 string mot = Console.ReadLine();
 int tailleMot = mot.Length;
 
-Console.WriteLine("le mot devra être trouvé en combien d'éssais?");
-string essais = Console.ReadLine();
+Console.WriteLine("Combien d'erreur sont tolérée?");
+
+var nbr = int.Parse(Console.ReadLine());
+int nbrErreur = nbr;
 
 Console.Clear();
 
-Console.WriteLine("le mot était "+ mot +" et il faisaitt "+ tailleMot+ " lettres");
+string soluce;
+int i;
+for (i=0; i<tailleMot; i++){
+  
+};
+
+ while(nbrErreur>=0){  
+    Console.WriteLine("Il te reste "+ nbrErreur+ " chances");  
+    --nbrErreur;  
+}
+Console.WriteLine("le mot était "+ mot +" et il faisait "+ tailleMot+ " lettres");
+

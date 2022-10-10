@@ -1,4 +1,6 @@
-﻿public class Letter {
+﻿using System;
+using System.Collections.Generic;
+public class Letter {
     private char _value;
     private bool _hidden;
     public Letter(char value) {

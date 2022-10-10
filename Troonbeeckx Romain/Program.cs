@@ -27,7 +27,8 @@ char[] soluce = new char[mot.Length];
 //tableau des lettres données
 char[] lettreDonne= new char[26];
 int numeroLettre =0;
- int bonneLettre =0;
+int bonneLettre =0;
+char lettre;
 
 while(bonneLettre<=mot.Length-1){  
 //Affichage du tableau et des information sur le mot
@@ -47,42 +48,43 @@ while(bonneLettre<=mot.Length-1){
     Console.WriteLine($"il vous reste {nbrErreur} chances");
     Console.WriteLine(" ");
     Console.WriteLine($"entrer une lettre");
-    string lettreInput = Console.ReadLine();
-    char lettre; 
+    string lettreInput = Console.ReadLine(); 
     char.TryParse(lettreInput, out lettre);
     Console.Clear();
     erreur=0;
-    
+    if(lettreDonne.Contains(lettre)){
+        Console.WriteLine($"Tu as déjà donné la lettre {lettre}.");
+    }
+    else{
+            lettreDonne[numeroLettre] =lettre;
+            numeroLettre++;
+    }
 //verif de la lettre 
     for(int j =0; j<=motATrouver.Length-1; j++){
 //si lettre  bonne
         if(motATrouver[j]==lettre){
             if (soluce[j]==lettre){
-                Console.WriteLine($"tu as déjà donné la lettre {lettre}");
             }
             else {
             Console.WriteLine($"tu as trouvé la lettre {lettre}");
             soluce[j]=lettre;
             ++bonneLettre;
-            lettreDonne[numeroLettre] =lettre;
-            numeroLettre++;
             }
         }
 //si lettre mauvaise
         else{
             erreur++;
             if (erreur==mot.Length){
-                nbrErreur--;
-                lettreDonne[numeroLettre] =lettre;
-                numeroLettre++;
-                
+            nbrErreur--;
             }
         }
     };
+//sortie de la boucle si plus de chance
     if (nbrErreur<=0){
         break;
     }
 };
+
 // si tu as perdu
 if(nbrErreur<=0){
 Console.WriteLine("Tu as perdu!");

@@ -1,5 +1,11 @@
-﻿
+﻿Console.Clear();
+Console.WriteLine(" ");
+Console.WriteLine("Bonjour et bienvenue dans le jeu du pendu!");
+Console.WriteLine(" ");
 bool boucle= true;
+int partie=0;
+int partieGagne=0;
+int partiePerdue=0;
 
 while(boucle!=false){
     int nbrErreur=1;
@@ -7,7 +13,7 @@ while(boucle!=false){
     string mot="base";
 
     while (boucle!=false) {
-        Console.WriteLine("Voulez vous parametrez le jeu? oui = o ou non = n");
+        Console.WriteLine("Voulez vous parametrez votre partie? oui = o ou non = n");
         reponse = Console.ReadLine();
     //parametrage manuel
     if(reponse=="o"){
@@ -67,6 +73,7 @@ while(boucle!=false){
         }
 
     Console.Clear();
+    partie++;
     //Création du tableau pour stocker la solution 
     char[] soluce = new char[mot.Length];
             for (int i=0; i < mot.Length; i++)
@@ -138,12 +145,25 @@ while(boucle!=false){
 
     // si tu as perdu
     if(nbrErreur<=0){
-    Console.WriteLine("Vous avez perdu!");
-    Console.WriteLine($"Le mot était {mot}");
+        Console.Write("Vous avez perdu!                  Lettres données:");
+        for (int i=0; i <= lettreDonne.Length-1; i++)
+        {
+            Console.Write(" "+lettreDonne[i]);
+        }
+        Console.WriteLine(" ");
+        Console.WriteLine($"Le mot était:");
+        Console.WriteLine(" ");
+        for (int i=0; i <= motATrouver.Length-1; i++)
+        {
+            Console.Write(" "+motATrouver[i]);
+        }
+        Console.WriteLine(" ");
+        Console.WriteLine(" ");        
+        partiePerdue++;
     }
     // si tu as gagné
     else{
-        Console.Write($"Bravo vous avez trouvé le mot!!                   Lettres déjà données:");
+        Console.Write($"Bravo vous avez trouvé le mot!!                   Lettres données:");
         for (int i=0; i <= lettreDonne.Length-1; i++)
         {
             Console.Write(" "+lettreDonne[i]);
@@ -157,9 +177,11 @@ while(boucle!=false){
         Console.WriteLine(" ");
         Console.WriteLine(" ");
         Console.WriteLine($"Il vous restait {nbrErreur} chances");
-        
+        partieGagne++;        
     }
     while(boucle!=false){
+        Console.WriteLine(" ");
+        Console.WriteLine($"Nombre de parties jouées: {partie}         Parties gagnées: {partieGagne}         Parties perdues: {partiePerdue}");
         Console.WriteLine(" ");
         Console.WriteLine("Veux-tu rejouer? oui = o ou non = n");
         reponse = Console.ReadLine();

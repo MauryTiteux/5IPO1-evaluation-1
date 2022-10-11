@@ -36,10 +36,9 @@ namespace test {
                     for (int j = -1; j <= 1; j++) {
                         int tmpLine = this._line + i;
                         int tmpCol = this._column + j;
-                        if (this._mapHandle.IsValidLocation(tmpLine, tmpCol)) {
-                            if (this._mapHandle.GetCellIn(tmpLine, tmpCol)._isBomb)
-                                ret++;
-                        }
+                        Cell c = this._mapHandle.GetCellIn(tmpLine, tmpCol);
+                        if (c != null && c._isBomb)
+                            ret++;
                     }
                 }
                 return ret;
@@ -50,10 +49,15 @@ namespace test {
                 return this._line;
             }
         }
+        public int Column {
+            get {
+                return this._column;
+            }
+        }
         public override string ToString()
         {
-            //if (!this._isVisible)
-            //    return "[ ]";
+            if (!this._isVisible)
+                return "[ ]";
             if (this._isBomb)
                 return String.Format("[{0}]", Cell.BombChar);
             return String.Format("[{0}]", this.BombNeighbor);

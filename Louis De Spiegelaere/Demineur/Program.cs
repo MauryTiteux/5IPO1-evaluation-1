@@ -26,9 +26,19 @@ namespace test {
             try {
                 demineur = new Demineur(height, width, bombs);
             } catch (ArgumentException e) {
-                Console.WriteLine(e.Message);
+                Console.Write(e.Message);
             }
-            Console.WriteLine(demineur);
+            Console.Clear();
+            while (true) {
+                Console.WriteLine(demineur);
+                int line;
+                int column;
+                while (!int.TryParse(Console.ReadLine(), out line) || !int.TryParse(Console.ReadLine(), out column));
+                if (demineur.Map.DiscoverCell(line - 1, column - 1) == Map.Result.Bomb) {
+                    Console.WriteLine("Perdu !");
+                        return ;
+                }
+            }
         }
     }
 }

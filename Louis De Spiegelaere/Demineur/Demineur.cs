@@ -15,7 +15,7 @@ namespace test {
             } catch (ArgumentException e) {
                 throw new ArgumentException(e.Message);
             }
-            this._map = new Map(this._height, this._width, bombs);
+            this._map = new Map(this._height, this._width, this._bombs);
         }
         public uint Height {
             get {

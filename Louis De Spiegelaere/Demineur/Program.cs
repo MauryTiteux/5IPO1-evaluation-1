@@ -29,16 +29,14 @@ namespace test {
                 Console.Write(e.Message);
             }
             Console.Clear();
-            while (true) {
+            if (demineur.Play() == true) {
+                Console.Clear();
+                Console.WriteLine("Felicitation, vous avez gagne !");
                 Console.WriteLine(demineur);
-                int line;
-                int column;
-                while (!int.TryParse(Console.ReadLine(), out line) || !int.TryParse(Console.ReadLine(), out column));
-                if (demineur.Map.DiscoverCell(line - 1, column - 1) == Map.Result.Bomb) {
-                    Console.WriteLine("Perdu !");
-                        return ;
-                }
+                return;
             }
+            Console.WriteLine("Dommage, c'est perdu !");
+            return;
         }
     }
 }

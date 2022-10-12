@@ -43,6 +43,15 @@ namespace test {
                 return false;
             return true;
         }
+        public bool IsResolved() {
+            for (int i = 0; i < this.matrix.Length; i++) {
+                for (int j = 0; j < this.matrix[i].Length; j++) {
+                    if (!this.matrix[i][j].IsVisible && !this.matrix[i][j].IsBomb)
+                        return false;
+                }
+            }
+            return true;
+        }
         public Cell GetCellIn(int line, int column) {
             if (!this.IsValidLocation(line, column)) return null;
             return this.matrix[line][column];
@@ -71,7 +80,6 @@ namespace test {
             }
             return Map.Result.emptyCell;
         }
-
         public override string ToString() {
             string ret = "";
             for (int i = 0; i < this.matrix.Length; i++) {

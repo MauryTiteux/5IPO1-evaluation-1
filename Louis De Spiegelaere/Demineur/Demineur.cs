@@ -1,5 +1,13 @@
 namespace test {
     public class Demineur {
+        private class Cursor {
+            public int line;
+            public int column;
+            public Cursor(int line, int column) {
+                this.line = line;
+                this.column = column;
+            }
+        }
         public const uint MaxWidth = 100;
         public const uint MaxHeight = 100;
         public const uint MinEmptyCells = 10;
@@ -7,6 +15,7 @@ namespace test {
         private uint _height;
         private uint _width;
         private uint _bombs;
+        private Cursor cursor;
         public Demineur(uint height, uint width, uint bombs) {
             try {
                 this.Height = height;
@@ -15,7 +24,21 @@ namespace test {
             } catch (ArgumentException e) {
                 throw new ArgumentException(e.Message);
             }
+            cursor = new Cursor(0, 0);
             this._map = new Map(this._height, this._width, this._bombs);
+        }
+        public bool Play() {
+            while (!this.Map.IsResolved()) {
+                Console.WriteLine(this);
+                int line;
+                int column;
+                while (!int.TryParse(Console.ReadLine(), out line) || !int.TryParse(Console.ReadLine(), out column));
+                if (this.Map.DiscoverCell(line - 1, column - 1) == Map.Result.Bomb) {
+                    Console.WriteLine("Perdu !");
+                        return false;
+                }
+            }
+            return true;
         }
         public uint Height {
             get {

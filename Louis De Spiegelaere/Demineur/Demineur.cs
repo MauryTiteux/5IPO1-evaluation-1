@@ -53,7 +53,16 @@ namespace test {
         while (!this.Map.IsResolved()) {
             Console.Clear();
             Console.WriteLine(this);
-            Console.WriteLine();
+            int tmpLeft = Console.CursorLeft;
+            int tmpTop = Console.CursorTop;
+            ConsoleColor tmpColor = Console.BackgroundColor;
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.SetCursorPosition(this.cursor.Location.Column * 3 + this.cursor.Location.Column, this.cursor.Location.Line);
+            Console.Write(this.cursor.Location.ToString());
+            Console.CursorLeft = tmpLeft;
+            Console.CursorTop = tmpTop;
+            Console.BackgroundColor = tmpColor;
+            Console.WriteLine(); 
             Console.WriteLine(this.cursor);
             ConsoleKey ck = Console.ReadKey().Key;
             Console.WriteLine();

@@ -36,9 +36,11 @@ namespace test {
                     for (int j = -1; j <= 1; j++) {
                         int tmpLine = this._line + i;
                         int tmpCol = this._column + j;
-                        Cell c = this._mapHandle.GetCellIn(tmpLine, tmpCol);
-                        if (c != null && c._isBomb)
-                            ret++;
+                        Cell c;
+                        try {
+                            c = this._mapHandle.GetCellIn(tmpLine, tmpCol);
+                            if (c._isBomb) ret++;
+                        } catch (ArgumentException) {}
                     }
                 }
                 return ret;
@@ -53,6 +55,11 @@ namespace test {
             get {
                 return this._column;
             }
+        }
+        public string GetUnhiddenCell() {
+            if (this._isBomb)
+                return String.Format("[{0}]", Cell.BombChar);
+            return String.Format("[{0}]", this.BombNeighbor);
         }
         public override string ToString()
         {

@@ -27,15 +27,27 @@ namespace test {
                 demineur = new Demineur(height, width, bombs);
             } catch (ArgumentException e) {
                 Console.Write(e.Message);
-            }
-            Console.Clear();
-            if (demineur.Play() == true) {
-                Console.Clear();
-                Console.WriteLine("Felicitation, vous avez gagne !");
-                Console.WriteLine(demineur);
                 return;
             }
+            Console.Clear();
+            try {
+                if (demineur.Play() == true) {
+                    Console.Clear();
+                    Console.WriteLine("Felicitation, vous avez gagne !");
+                    Console.WriteLine(demineur.Map);
+                    Console.WriteLine();
+                    Console.WriteLine(demineur.Map.GetUnhiddenMap());
+                    return;
+                }
+            } catch (ArgumentException e) {
+                Console.WriteLine(e.Message);
+            }
+            Console.Clear();
+            Console.WriteLine(demineur.Map);
+            Console.WriteLine();
             Console.WriteLine("Dommage, c'est perdu !");
+            Console.WriteLine();
+            Console.WriteLine(demineur.Map.GetUnhiddenMap());
             return;
         }
     }

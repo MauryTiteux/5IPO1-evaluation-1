@@ -1,11 +1,33 @@
 namespace test {
     public class Demineur {
         private class Cursor {
-            public int line;
-            public int column;
-            public Cursor(int line, int column) {
-                this.line = line;
-                this.column = column;
+            private Cell _loc;
+            private Demineur _d;
+            public Cursor(int line, int column, Demineur d) {
+                this._d = d;
+                try {
+                    this._loc = this._d.Map.GetCellIn(line, column);
+                } catch (ArgumentException e) {
+                    throw new ArgumentException(e.Message);
+                }
+            }
+            public override string ToString()
+            {
+                return String.Format("[{0};{1}]", this._loc.Line, this._loc.Column);
+            }
+            public void AttemptToMove(int line, int column) {
+                Cell c;
+                try {
+                    c = this._d.Map.GetCellIn(line, column);
+                } catch (ArgumentException e){
+                    throw new ArgumentException(e.Message);
+                }
+                this._loc = c;
+            }
+            public Cell Location {
+                get {
+                    return this._loc;
+                }
             }
         }
         public const uint MaxWidth = 100;
@@ -24,22 +46,60 @@ namespace test {
             } catch (ArgumentException e) {
                 throw new ArgumentException(e.Message);
             }
-            cursor = new Cursor(0, 0);
             this._map = new Map(this._height, this._width, this._bombs);
+            cursor = new Cursor(0, 0, this);
         }
-        public bool Play() {
-            while (!this.Map.IsResolved()) {
-                Console.WriteLine(this);
-                int line;
-                int column;
-                while (!int.TryParse(Console.ReadLine(), out line) || !int.TryParse(Console.ReadLine(), out column));
-                if (this.Map.DiscoverCell(line - 1, column - 1) == Map.Result.Bomb) {
-                    Console.WriteLine("Perdu !");
-                        return false;
-                }
+    public bool Play() {
+        while (!this.Map.IsResolved()) {
+            Console.Clear();
+            Console.WriteLine(this);
+            Console.WriteLine();
+            Console.WriteLine(this.cursor);
+            ConsoleKey ck = Console.ReadKey().Key;
+            Console.WriteLine();
+            switch (ck) {
+                case ConsoleKey.UpArrow:
+                    try {
+                        this.cursor.AttemptToMove(this.cursor.Location.Line - 1, this.cursor.Location.Column);
+                    } catch (ArgumentException e) {
+                        Console.WriteLine(e.Message);
+                    }
+                    break;
+                case ConsoleKey.DownArrow:
+                    try {
+                        this.cursor.AttemptToMove(this.cursor.Location.Line + 1, this.cursor.Location.Column);
+                    } catch (ArgumentException e) {
+                        Console.WriteLine(e.Message);
+                    }
+                    break;
+                case ConsoleKey.LeftArrow:
+                    try {
+                        this.cursor.AttemptToMove(this.cursor.Location.Line, this.cursor.Location.Column - 1);
+                    } catch (ArgumentException e) {
+                        Console.WriteLine(e.Message);
+                    }
+                    break;
+                case ConsoleKey.RightArrow:
+                    try {
+                        this.cursor.AttemptToMove(this.cursor.Location.Line, this.cursor.Location.Column + 1);
+                    } catch (ArgumentException e) {
+                        Console.WriteLine(e.Message);
+                    }
+                    break;
+                case ConsoleKey.Spacebar:
+                    try {
+                        if (this.Map.DiscoverCell(this.cursor.Location.Line, this.cursor.Location.Column) == Map.Result.Bomb) {
+                            Console.WriteLine("Perdu !");
+                            return false;
+                        }
+                    } catch (ArgumentException e) {
+                        Console.WriteLine(e.Message);
+                    }
+                    break;
             }
-            return true;
         }
+        return true;
+    }
         public uint Height {
             get {
                 return this._height;

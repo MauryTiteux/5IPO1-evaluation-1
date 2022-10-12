@@ -53,13 +53,16 @@ namespace test {
             return true;
         }
         public Cell GetCellIn(int line, int column) {
-            if (!this.IsValidLocation(line, column)) return null;
+            if (!this.IsValidLocation(line, column)) throw new ArgumentException("Error trying to query cell outside of map");
             return this.matrix[line][column];
         }
         public Map.Result DiscoverCell(int line, int column) {
-            Cell c = this.GetCellIn(line, column);
-            if (c == null)
-                return Map.Result.outOfBounds;
+            Cell c;
+            try {
+                c = this.GetCellIn(line, column);
+            } catch (ArgumentException e){
+                throw new ArgumentException(e.Message);
+            }
             if (c.IsVisible)
                 return Map.Result.alreadyVisible;
             if (c.IsBomb) {
@@ -75,10 +78,22 @@ namespace test {
                 for (int j = -1; j <= 1; j++) {
                     int y = c.Line + i;
                     int x = c.Column + j;
-                    this.DiscoverCell(y, x);
+                    try {
+                        this.DiscoverCell(y, x);
+                    } catch (ArgumentException) {}
                 }
             }
             return Map.Result.emptyCell;
+        }
+        public string GetUnhiddenMap() {
+            string ret = "";
+            for (int i = 0; i < this.matrix.Length; i++) {
+                for (int j = 0; j < this.matrix[i].Length; j++) {
+                        ret += this.matrix[i][j].GetUnhiddenCell() + ((j == this.matrix[i].Length - 1) ? "" : " ");
+                }
+                if (i < this.matrix.Length - 1) ret += "\n";
+            }
+            return ret;
         }
         public override string ToString() {
             string ret = "";

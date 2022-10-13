@@ -6,18 +6,36 @@ namespace test {
         private bool _isBomb;
         private int _line;
         private int _column;
+        private bool _hasFlag;
         public Cell(Map mapHandle, int line, int column) {
             this._mapHandle = mapHandle;
             this._isVisible = false;
             this._isBomb = false;
+            this._hasFlag = false; 
             this._line = line;
             this._column = column;
+        }
+        public string GetUnhiddenCell() {
+            if (this._isBomb)
+                return String.Format("[{0}]", Cell.BombChar);
+            return String.Format("[{0}]", this.BombNeighbor);
+        }
+        public bool SetFlag() {
+            if (this._hasFlag) return false;
+            this._hasFlag = true;
+            return true;
+        }
+        public bool UnsetFlag() {
+            if (!this._hasFlag) return false;
+            this._hasFlag = false;
+            return false;
         }
         public bool IsVisible {
             get {
                 return this._isVisible;
             }
             set {
+                this._hasFlag = false;
                 this._isVisible = value;
             }
         }
@@ -56,15 +74,18 @@ namespace test {
                 return this._column;
             }
         }
-        public string GetUnhiddenCell() {
-            if (this._isBomb)
-                return String.Format("[{0}]", Cell.BombChar);
-            return String.Format("[{0}]", this.BombNeighbor);
+        public bool Flagged {
+            get {
+                return this._hasFlag;
+            }
         }
         public override string ToString()
         {
-            if (!this._isVisible)
-                return "[ ]";
+            if (!this._isVisible) {
+                if (!this._hasFlag)
+                    return "[ ]";
+                return "[!]";
+            }
             if (this._isBomb)
                 return String.Format("[{0}]", Cell.BombChar);
             return String.Format("[{0}]", this.BombNeighbor);

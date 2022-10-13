@@ -33,8 +33,9 @@ namespace test {
             try {
                 if (demineur.Play() == true) {
                     Console.Clear();
-                    Console.WriteLine("Felicitation, vous avez gagne !");
                     Console.WriteLine(demineur.Map);
+                    Console.WriteLine();
+                    Console.WriteLine("Felicitation, vous avez gagne !");
                     Console.WriteLine();
                     Console.WriteLine(demineur.Map.GetUnhiddenMap());
                     return;

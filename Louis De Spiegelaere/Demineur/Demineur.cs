@@ -32,7 +32,7 @@ namespace test {
         }
         public const uint MaxWidth = 100;
         public const uint MaxHeight = 100;
-        public const uint MinEmptyCells = 10;
+        public const uint MinEmptyCells = 0;
         private Map _map;
         private uint _height;
         private uint _width;
@@ -49,66 +49,87 @@ namespace test {
             this._map = new Map(this._height, this._width, this._bombs);
             cursor = new Cursor(0, 0, this);
         }
-    public bool Play() {
-        while (!this.Map.IsResolved()) {
-            Console.Clear();
-            Console.WriteLine(this);
+        public void OverrideWithBGC(Cell target, ConsoleColor color) {
             int tmpLeft = Console.CursorLeft;
             int tmpTop = Console.CursorTop;
             ConsoleColor tmpColor = Console.BackgroundColor;
-            Console.BackgroundColor = ConsoleColor.Blue;
-            Console.SetCursorPosition(this.cursor.Location.Column * 3 + this.cursor.Location.Column, this.cursor.Location.Line);
-            Console.Write(this.cursor.Location.ToString());
+
+            Console.BackgroundColor = color;
+            Console.SetCursorPosition(target.Column * 3 + target.Column, target.Line);
+            Console.Write(target.ToString());
             Console.CursorLeft = tmpLeft;
             Console.CursorTop = tmpTop;
             Console.BackgroundColor = tmpColor;
-            Console.WriteLine(); 
-            Console.WriteLine(this.cursor);
-            ConsoleKey ck = Console.ReadKey().Key;
-            Console.WriteLine();
-            switch (ck) {
-                case ConsoleKey.UpArrow:
-                    try {
-                        this.cursor.AttemptToMove(this.cursor.Location.Line - 1, this.cursor.Location.Column);
-                    } catch (ArgumentException e) {
-                        Console.WriteLine(e.Message);
-                    }
-                    break;
-                case ConsoleKey.DownArrow:
-                    try {
-                        this.cursor.AttemptToMove(this.cursor.Location.Line + 1, this.cursor.Location.Column);
-                    } catch (ArgumentException e) {
-                        Console.WriteLine(e.Message);
-                    }
-                    break;
-                case ConsoleKey.LeftArrow:
-                    try {
-                        this.cursor.AttemptToMove(this.cursor.Location.Line, this.cursor.Location.Column - 1);
-                    } catch (ArgumentException e) {
-                        Console.WriteLine(e.Message);
-                    }
-                    break;
-                case ConsoleKey.RightArrow:
-                    try {
-                        this.cursor.AttemptToMove(this.cursor.Location.Line, this.cursor.Location.Column + 1);
-                    } catch (ArgumentException e) {
-                        Console.WriteLine(e.Message);
-                    }
-                    break;
-                case ConsoleKey.Spacebar:
-                    try {
-                        if (this.Map.DiscoverCell(this.cursor.Location.Line, this.cursor.Location.Column) == Map.Result.Bomb) {
-                            Console.WriteLine("Perdu !");
-                            return false;
-                        }
-                    } catch (ArgumentException e) {
-                        Console.WriteLine(e.Message);
-                    }
-                    break;
-            }
         }
-        return true;
-    }
+        public bool Play() {
+            while (!this.Map.IsResolved()) {
+                Console.Clear();
+                Console.WriteLine(this.Map);
+                foreach (Cell c in this.Map.GetFlaggedCells()) {
+                    OverrideWithBGC(c, ConsoleColor.Red);
+                }
+                OverrideWithBGC(cursor.Location, ConsoleColor.Green);
+                Console.WriteLine();
+                Console.WriteLine(String.Format("Flags : {0}", this.Map.Flags));
+                Console.WriteLine(this.cursor);
+                ConsoleKey ck = Console.ReadKey().Key;
+                Console.WriteLine();
+                switch (ck) {
+                    case ConsoleKey.UpArrow:
+                        try {
+                            this.cursor.AttemptToMove(this.cursor.Location.Line - 1, this.cursor.Location.Column);
+                        } catch (ArgumentException e) {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    case ConsoleKey.DownArrow:
+                        try {
+                            this.cursor.AttemptToMove(this.cursor.Location.Line + 1, this.cursor.Location.Column);
+                        } catch (ArgumentException e) {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        try {
+                            this.cursor.AttemptToMove(this.cursor.Location.Line, this.cursor.Location.Column - 1);
+                        } catch (ArgumentException e) {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    case ConsoleKey.RightArrow:
+                        try {
+                            this.cursor.AttemptToMove(this.cursor.Location.Line, this.cursor.Location.Column + 1);
+                        } catch (ArgumentException e) {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    case ConsoleKey.Spacebar:
+                        try {
+                            if (this.Map.DiscoverCell(this.cursor.Location.Line, this.cursor.Location.Column) == Map.Result.Bomb) {
+                                Console.WriteLine("Perdu !");
+                                return false;
+                            }
+                        } catch (ArgumentException e) {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    case ConsoleKey.F:
+                        try {
+                            Cell c = this.Map.GetCellIn(this.cursor.Location.Line, this.cursor.Location.Column);
+                            if (c.Flagged)
+                                c.UnsetFlag();
+                            else {
+                                if (this.Map.Flags < this._bombs)
+                                    c.SetFlag();
+                            }
+                        } catch (ArgumentException e) {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                }
+            }
+            return true;
+        }
         public uint Height {
             get {
                 return this._height;

@@ -56,6 +56,16 @@ namespace test {
             if (!this.IsValidLocation(line, column)) throw new ArgumentException("Error trying to query cell outside of map");
             return this.matrix[line][column];
         }
+        public List<Cell> GetFlaggedCells() {
+            List<Cell> ret = new List<Cell>();
+            for (int i = 0; i < this.matrix.Length; i++) {
+                for (int j = 0; j < this.matrix[i].Length; j++) {
+                    if (matrix[i][j].Flagged)
+                        ret.Add(matrix[i][j]);
+                }
+            }
+            return ret;
+        }
         public Map.Result DiscoverCell(int line, int column) {
             Cell c;
             try {
@@ -94,6 +104,18 @@ namespace test {
                 if (i < this.matrix.Length - 1) ret += "\n";
             }
             return ret;
+        }
+        public uint Flags{
+            get {
+                uint ret = 0;
+                for (int i = 0; i < this.matrix.Length; i++) {
+                    for (int j = 0; j < this.matrix[i].Length; j++) {
+                        if (this.matrix[i][j].Flagged)
+                            ret++;
+                    }
+                }
+                return ret;
+            }
         }
         public override string ToString() {
             string ret = "";

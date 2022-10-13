@@ -30,7 +30,7 @@ while(boucle!=false){
     //parametrage random
     else if(reponse=="n"){
     //création du tableau de mot
-        string[] tabMot = {"arbre","poharmacie","tableau","coucou","hibou","frigo","biere","ordinateur","pendu","ventilateur"};
+        string[] tabMot = {"arbre","pharmacie","tableau","coucou","hibou","frigo","biere","ordinateur","pendu","ventilateur"};
     //choix du mot au hasard
         Random aleatoire = new Random();
         int entier = aleatoire.Next(10);

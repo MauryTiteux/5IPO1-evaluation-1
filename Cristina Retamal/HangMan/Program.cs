@@ -10,6 +10,8 @@ namespace HangMan
 
             Word s = new Word("cristina");
 
+            Console.WriteLine(s.getCurrentWord());
+
         
             
         }

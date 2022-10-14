@@ -10,9 +10,11 @@ internal class Program
 
         Pendu pendu1 = new Pendu(secretWord[index]);
 
+
+
         while (pendu1.IsRevealed() == false && pendu1.IsLost() == false)
         {
-            Console.WriteLine("Entrez un caratère, vous avez droit à 10 erreurs");
+            Console.WriteLine($"Entrez un caratère, vous avez droit à {pendu1.lives} erreurs");
             char input = Console.ReadKey().KeyChar; //fonction pour détecter une entrée clavier
             if (pendu1.Attempt(input))
             {

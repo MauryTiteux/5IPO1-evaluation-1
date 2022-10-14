@@ -175,28 +175,32 @@ struct JeuStruct  //variable complexe de type structure.
         }
         if (!motFlags.Contains(0)) 
         {
-            if (niveau >= listMots.Count)
-            {
-                VictoireJeu();
-            }
-            VictoireNiveau();
+            VictoireNiveau();   
         }
     }
     public void VictoireNiveau()
     {
-        //message de fin de niveau et demande de remise a zero
+        //message de fin de niveau et demande de remise a zero ou mise a fin du jeu
         niveau = niveau + 1;
         Console.Clear();
         Console.WriteLine("\n\n\tFélicitation!!! Vous avez trouvé le mot secret : "+motEnCourt);
         Console.WriteLine("\n\n\t\tVous allez passer au niveau suivant...");
         Console.WriteLine("\n\n\t\t   Tapez sur entrer pour continuer!");
         Console.ReadLine();
-        clearNiveau();
+        if (niveau < listMots.Count)
+        {
+            clearNiveau();
+        }
+        else
+        {
+            VictoireJeu();
+        }
+        
     }
     public void clearNiveau()
     {
         //remise a zero pour niveau suivant
-        vies = vies=viesMax;
+        vies = viesMax;
         int x, y;
         for (int i=0; i < viesMax; i++)
         {
@@ -212,6 +216,7 @@ struct JeuStruct  //variable complexe de type structure.
     }
     public void AfficheJeu()
     {
+        //Affichage principale du jeu
         Console.SetCursorPosition(0,0);
         Console.Write("Jeu : " + titre + "        Niveau : " + niveau);
         Console.WriteLine("        Vies : " + vies);
@@ -229,10 +234,14 @@ struct JeuStruct  //variable complexe de type structure.
     {
         //message de fin de jeu (END)
         Console.Clear();
-        Console.WriteLine("\n\n\tFélicitation!!! Vous avez terminé le jeu ");
-        Console.WriteLine("\n\n\t\tVous êtes l'ultime champion...");
-        Console.WriteLine("\n\n\t\t Tapez sur entrer pour quitter!");
+        Console.WriteLine("\n\n\t**************************************");
+        Console.WriteLine("\n\n\t*            THE END                 *");
+        Console.WriteLine("\n\n\t**************************************");
+        Console.WriteLine("\n\n\t      Vous êtes l'ultime champion...");
+        Console.WriteLine("\n\n\t       Vous avez terminé le jeu!!!"  );
+        Console.WriteLine("\n\n\t      Tapez sur entrer pour quitter!");
         Console.ReadLine();
+        resterDansJeu=false;
     
     }
 }

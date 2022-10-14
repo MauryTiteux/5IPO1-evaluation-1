@@ -30,11 +30,7 @@
                     hiddenWord = "";
                     for (int j = 0; j < word.Length; j++)
                     {
-                        if(i==j){
-                            hiddenWord= hiddenWord + lettre;
-                        }else{
-                            hiddenWord = hiddenWord + "_";
-                        }
+                        hiddenWord[i] = lettre;
                     }
                 }
             }

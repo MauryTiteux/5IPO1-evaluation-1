@@ -5,14 +5,8 @@
 /////////////
 
 
-
-
-
-
-
 // Pour le REGEX
 using System.Text.RegularExpressions;
-
 
 
 public class Pendu{
@@ -20,8 +14,7 @@ public class Pendu{
 
     // static void RandomWord() {
 
-      
-
+    
     // } 
 
     
@@ -35,7 +28,7 @@ public class Pendu{
 
     static void PrintMessages() 
     {
-        //   Console.WriteLine("I just got executed!");
+        //   Console.WriteLine("testestets");
         
     }
     
@@ -105,8 +98,6 @@ public class Pendu{
 
             // Si on utilise pas ceci on a un doublon au niveau des lettres trouvés (liés au Console.WriteLine)
             Console.WriteLine(string.Empty);
-
-
 
 
             // Si elle ne respecte pas les règles regex 

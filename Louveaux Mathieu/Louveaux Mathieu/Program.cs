@@ -11,10 +11,11 @@ string[] motArr = Array.ConvertAll(test3, x => x.ToString());   //convertis les 
 string[] motMasque = hiddenWord(motArr);                        // crée un tableau de meme longeur que le tableau des lettres du mot et le remplis de point
 
 
-static void attempt(string[] arrMot, string[] arrMotCache, List<string> usedLettre, int count = 3, int occur = 0, int index = 0)
+static void attempt(string[] arrMot, string[] arrMotCache, List<string> usedLettre, int count = 6, int occur = 0, int index = 0)
 {
     do
     {
+        Console.WriteLine("Vous avez "+count+" vie");
         for (int i = 0; i < arrMotCache.Length; i++)                // affiche le nombre de lettre du mot a trouvé
         {
 
@@ -26,7 +27,19 @@ static void attempt(string[] arrMot, string[] arrMotCache, List<string> usedLett
         usedLettre.ForEach(Console.Write);                          // affiche toute les lettres entrée par l'utilisateur
         Console.WriteLine("");
         Console.WriteLine("_______________");
-        char lettreChar = Console.ReadKey().KeyChar;
+        bool ok = false;
+        char lettreChar;
+        do
+        {
+        lettreChar = Console.ReadKey().KeyChar;
+        ok = Char.IsLetter(lettreChar);
+        if (!ok)
+        {
+            Console.WriteLine("");
+            Console.WriteLine(lettreChar+" n'est pas une lettre. Veuillez entrer une lettre");
+        }
+        } while (!ok);
+        
         Console.WriteLine("");
         Console.WriteLine("");
 
@@ -88,7 +101,6 @@ static void attempt(string[] arrMot, string[] arrMotCache, List<string> usedLett
         if (bonneLettre == false && count != 0)                            // si une mauvaise lettre est trouver et qu'on a encore au moins 1 vie, affichage du message "mauvaise lettre" et du nombre de vie restant
         {
             Console.WriteLine("Mauvaise lettre essayer a nouveau");
-            Console.WriteLine("Il vous reste " + count + " vie");
             Console.WriteLine("");
         }
         index++;

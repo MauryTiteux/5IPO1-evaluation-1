@@ -24,8 +24,30 @@ namespace HangMan
 
         }
 
-        
+        public bool addLetter(char letter)
+        {
+            bool passed = false;
+            if(this.refWord.Contains(letter))
+            {
+                for(int i=0; i < this.refWord.Length; i++)
+                {
+                    if(this.refWord[i] == letter && this.currentWord[i] == '_')
+                    {
+                        char[] charArr = this.currentWord.ToCharArray();
+                        charArr[i] = letter; 
+                        this.currentWord = new string(charArr);   
+                        passed = true;
 
+                    }
+                    
+                }
+                
+            }
+
+            Console.WriteLine(this.currentWord);
+
+            return passed;
+        }
         
     }
 }

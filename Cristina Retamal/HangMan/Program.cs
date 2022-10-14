@@ -8,9 +8,16 @@ namespace HangMan
         {
             Console.WriteLine("Bienvenu au jeu du pendu");
 
-            Word s = new Word("cristina");
 
+            // Testing methods from class Word
+            Word s = new Word("bonjour");
             Console.WriteLine(s.getCurrentWord());
+            Console.WriteLine(s.addLetter('i'));
+
+            // Testing methods from class Player
+            Player p = new Player("cristina");
+            Console.WriteLine(p.getName());
+            Console.WriteLine(p.getLifePoints());
 
         
             

@@ -19,8 +19,8 @@ public class Pendu{
 
     
     // Array avec les mots a trouver
-    // string[] words = {"olivier", "michel", "seb"};
-    string[] words = {"olivier"};
+    string[] words = {"olivier", "michel", "seb"};
+    // string[] words = {"olivier"};
     // Nombres de vie
     int lives = 5;
     // Lettres du mot qu'il reste a deviné.

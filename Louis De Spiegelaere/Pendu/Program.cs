@@ -117,8 +117,8 @@ class Game {
             if (word.Attempt(input)) {
                 Console.WriteLine("Bravo !");
             } else {
-                if (input != ' ' && !IsCharInList(input) && !this.word.GetWord().ToLower().Contains(Char.ToLower(input))) {
-                    this.AlreadyTried.Add(input);
+                if (input != ' ' && !IsCharInList(Char.ToLower(input)) && !this.word.GetWord().ToLower().Contains(Char.ToLower(input))) {
+                    this.AlreadyTried.Add(Char.ToLower(input));
                     this._hp--;
                     Console.WriteLine("Dommage !");
                 }

@@ -75,9 +75,11 @@ public class HiddenWord {
 }
 class Game {
     public HiddenWord word;
+    private List<char> AlreadyTried;
     private int _turn;
     private int _hp;
     public Game(string[] words, int hp) {
+        this.AlreadyTried = new List<char>();
         word = new HiddenWord(words);
         this._turn = 0;
         this._hp = (hp <= 0) ? 1 : hp;
@@ -87,25 +89,39 @@ class Game {
             return this._turn;
         }
     }
-
     public int Hp {
         get {
             return this._hp;
         }
     }
+    private bool IsCharInList(char c) {
+        return this.AlreadyTried.Contains(c);
+    }
+    private string ListAsString() {
+        string ret = "";
+        for (int i = 0; i < this.AlreadyTried.Count; i++) {
+            ret += this.AlreadyTried[i] + ((i == this.AlreadyTried.Count - 1) ? "" : ", ");
+        }
+        return ret;
+    }
+
     public bool Play() {
         while (this._hp > 0) {
             Console.Clear();
             Console.WriteLine(String.Format("{0}. MOT CACHE : [{1}]", this._turn, this.word));
             Console.WriteLine(String.Format("Vies restantes : {0}", this._hp));
+            Console.WriteLine(String.Format("Lettres déjà essayées : {0}", this.ListAsString()));
             Console.WriteLine("Entrez un caractère : ");
             char input = Console.ReadKey().KeyChar;
             Console.WriteLine();
             if (word.Attempt(input)) {
                 Console.WriteLine("Bravo !");
             } else {
-                this._hp--;
-                Console.WriteLine("Dommage !");
+                if (!IsCharInList(input) && !this.word.GetWord().Contains(input)) {
+                    this.AlreadyTried.Add(input);
+                    this._hp--;
+                    Console.WriteLine("Dommage !");
+                }
             }
             if (word.IsFullyUnhidden()) {
                 Console.Clear();

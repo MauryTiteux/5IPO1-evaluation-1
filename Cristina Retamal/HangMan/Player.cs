@@ -24,7 +24,7 @@ namespace HangMan
             this.lifePoints = 6;
         }
 
-        private void loseLifePoints()
+        public void loseLifePoints()
         {
             this.lifePoints = this.lifePoints - 1;
         }

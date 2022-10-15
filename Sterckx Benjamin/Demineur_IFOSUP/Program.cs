@@ -64,7 +64,7 @@ bool WinCondition(Tile[,] field, int x, int y)
         return false;
     }
     // si tout les il ne reste plus que des bombes vous avez gagné
-    if (CountRemaining(field) == 10)
+    if (CountRemaining(field) == nbBomb)
     {
         Console.SetCursorPosition(0, 0);
         Console.ForegroundColor = ConsoleColor.Green;

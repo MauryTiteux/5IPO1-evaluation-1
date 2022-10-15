@@ -1,70 +1,81 @@
-﻿using System;
+﻿using System.Text;
 
 public class App
 {
-    public static void Main(string[] args)
+    public static void Main()
     {
         //Mot choisit au hasard parmi une liste
-        
         string[] words = new string[] {"chouffe", "duvel", "triple karmeliet", "orval", "barbar"};
         string response = "";
         int score = 6;
-        string updatedResponse = "";
+        bool win = false;
         Random random = new Random();
         var randomIndex = random.Next(0, words.Length);
         string hiddenWord = words[randomIndex];
 
-        //Creation de la reponse avec le mot caché
+        //Creation de la response cachée par des underscores
         for(var i=0 ; i<hiddenWord.Length ; i++)
         {
             if(Char.IsWhiteSpace(hiddenWord[i]))
             {
-                response += " .";
+                response += " ";
             }
             else 
             {
-                response += "_.";
+                response += "_";
             }
         }
 
         //Verification si la lettre est presente dans le mot
-        while(updatedResponse != hiddenWord)
+        while(score != 0)
         {
-           if(score == 0)
-            {
-                Console.WriteLine("Tentatives restantes : " + score);
-                Console.WriteLine("Game Over");
-                break;
-            }
-
             bool toggle = false;
             Console.WriteLine("Tentatives restantes : " + score);
-            Console.WriteLine(updatedResponse + "\n");
+            Console.WriteLine(response + "\n");
             Console.WriteLine("Quelle lettre ?");
             string str = Console.ReadLine();
-            char user = char.Parse(str);
+            char userInput = char.Parse(str);
 
             for(var i=0 ; i<hiddenWord.Length ; i++)
-            {
-                if(hiddenWord[i] == user)
+            {                
+                if(userInput == response[i])
                 {
-                   toggle = true;
-                   updatedResponse = response.Replace(response[i], user);
-                   break;
+                    break;
+                }
+                else(hiddenWord[i] == userInput)
+                {
+                    toggle = true;
+                    StringBuilder temp = new StringBuilder(response);
+                    temp[i] = userInput;
+                    response = temp.ToString();
+                    break;
                 }
             }
-
-            if(toggle)
-            {
-                Console.WriteLine("Bien joué");
-                Console.WriteLine(updatedResponse);
-            }
-            else 
-            {
-                Console.WriteLine("Raté !");
-                score--;
-            } 
         }
-        Console.WriteLine("Bien joué ! Le mot final etait : " + updatedResponse);
+        //Checks si le mot est trouvé
+        if(hiddenWord == response)
+        {
+            win = true;
+            break;
+        }
+        //Sinon résultat d'un essai
+        else if(toggle)
+        {
+            Console.WriteLine("Bien joué");
+        }
+        else 
+        {
+            Console.WriteLine("Raté !");
+            score--;
+        } 
+        
+        if(win)
+        {
+        Console.WriteLine("Vous avez trouvé le mot !\n" + response);
+        }
+        else
+        {
+            Console.WriteLine("Game Over");
+        }
     }
 }

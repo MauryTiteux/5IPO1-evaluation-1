@@ -37,7 +37,11 @@ public class App
             char userInput = char.Parse(str);
 
             for(var i=0 ; i<hiddenWord.Length ; i++)
-            {                
+            {         
+                if(userInput == response[i])
+                {
+                    continue;
+                }       
                 if(hiddenWord[i] == userInput)
                 {
                     toggle = true;

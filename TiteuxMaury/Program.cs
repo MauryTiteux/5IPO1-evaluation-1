@@ -11,6 +11,7 @@ if (word == null || word == "")
 string guessedWord = "";
 int guessedLetterCount = 0;
 int remainingLife = 8;
+List<char> badLetter = new List<char>();
 
 
 //creation des nb de point en focntion du nb de lettre dans le mot
@@ -45,6 +46,8 @@ do
     else
     {
         Console.WriteLine("Non cette lettre n'est pas dans le mot !");
+        badLetter.Add(letter);
+        Console.WriteLine($" Lettre deja proposé : {string.Join(", ", badLetter)}");
         remainingLife--;
         Console.WriteLine($" vie restante : {remainingLife}");
 

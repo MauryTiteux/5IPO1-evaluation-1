@@ -38,11 +38,7 @@ public class App
 
             for(var i=0 ; i<hiddenWord.Length ; i++)
             {                
-                if(userInput == response[i])
-                {
-                    break;
-                }
-                else(hiddenWord[i] == userInput)
+                if(hiddenWord[i] == userInput)
                 {
                     toggle = true;
                     StringBuilder temp = new StringBuilder(response);
@@ -51,24 +47,23 @@ public class App
                     break;
                 }
             }
-        }
-        //Checks si le mot est trouvé
-        if(hiddenWord == response)
-        {
-            win = true;
-            break;
-        }
-        //Sinon résultat d'un essai
-        else if(toggle)
-        {
-            Console.WriteLine("Bien joué");
-        }
-        else 
-        {
-            Console.WriteLine("Raté !");
-            score--;
+            //Checks si le mot est trouvé
+            if(hiddenWord == response)
+            {
+                win = true;
+                break;
+            }
+            //Sinon résultat d'un essai
+            else if(toggle)
+            {
+                Console.WriteLine("Bien joué");
+            }
+            else 
+            {
+                Console.WriteLine("Raté !");
+                score--;
+            } 
         } 
-        
         if(win)
         {
         Console.WriteLine("Vous avez trouvé le mot !\n" + response);

@@ -13,8 +13,7 @@ void pendu(){
     char[] guessArr = copyArray(wordArr); 
     initializeArr(guessArr);
 
-    char[] notIncludedArr = new char[25];
-    initializeNotInclu(notIncludedArr);
+    List<char> notIncludedList = new List<char>();
 
     int error = 0;
 
@@ -31,7 +30,7 @@ void pendu(){
 
         if(!hasGuessedRight(wordArr, guessArr, letter))
         {
-            pushToArr(letter, notIncludedArr);
+            notIncludedList.Add(letter);
             error++;
         }
         Console.Clear();
@@ -40,7 +39,7 @@ void pendu(){
         Console.WriteLine();
         if (error != 0)
         {
-            printArr(notIncludedArr);
+            printList(notIncludedList);
         }
 
         Console.WriteLine();
@@ -72,23 +71,6 @@ char[] copyArray (char[] arr)
     return copied;
 }
 
-bool hasLetter(char l, char[] arr)
-{
-    for (int i = 0 ; i < arr.Length ; i++)
-    {
-        if (Char.ToLower(arr[i]) == Char.ToLower(l)) return true; 
-    }
-    return false;
-}
-
-void initializeNotInclu (char[] arr)
-{
-    for (int i = 0 ; i < arr.Length ; i++)
-    {
-        arr[i] = '\0';
-    }
-}
-
 void initializeArr (char[] arr)
 {
     for (int x = 0 ; x < arr.Length ; x++)
@@ -99,7 +81,7 @@ void initializeArr (char[] arr)
 
 bool hasGuessedRight (char[] wordArr, char[] guessArr, char letter)
 {  
-    if (!hasLetter(letter, wordArr)) return false;
+    if (!wordArr.Contains(letter)) return false;
 
     for (int l = 0 ; l < wordArr.Length ; l++)
     {
@@ -111,41 +93,18 @@ bool hasGuessedRight (char[] wordArr, char[] guessArr, char letter)
     return true;
 }
 
-bool pushToArr (char l, char[] arr)
-{   
-    if (hasLetter(l, arr))
-    {
-        return false;
-    }
-    for (int i = 0 ; i < arr.Length ; i++)
-    {
-        if (arr[i] == '\0')
-        {
-            arr[i] = l;
-            return true;
-        }
-    }
-    return false;
-}
-
-void printArr (char [] arr)
+void printList (List<char> list)
 {
     Console.Write("Lettre erronée : [");
-    for(int i = 0 ; i < arr.Length ; i++)
+    for (int i = 0 ; i < list.Count ; i++)
     {
-        if (arr[i] != '\0')
+        Console.Write(list[i]);
+        if (i != list.Count - 1)
         {
-            Console.Write(arr[i]);
-            if (arr[i+1] == '\0')
-            {
-                Console.Write("]");
-            }
-            else if (i != arr.Length - 1)
-            {
-                Console.Write(", ");
-            }
+            Console.Write(", ");
         }
     }
+    Console.Write("]");
 }
 
 void printPendu (int erreur)

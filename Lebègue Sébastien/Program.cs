@@ -5,8 +5,8 @@ namespace HangMan
     public class Game
     {
         //Déclaration des variables publiques
-        public string[] words ;
-        public string response = "";
+        public string[] words;
+        public string response;
         public int score;
         public bool win;
         public Random random;
@@ -20,81 +20,82 @@ namespace HangMan
         //Création de la lise de mots du pendu
         public void WordList()
         {
-            this.words = new string[] {"chouffe", "duvel", "triple karmeliet", "orval", "barbar"};
+            words = new string[] {"chouffe", "duvel", "triple karmeliet", "orval", "barbar"};
         }
         //Choix du mot au hasard
         public void RandomWord()
         {
-            this.random = new Random();
-            randomIndex = random.Next(0, this.words.Length);
-            this.hiddenWord = this.words[this.randomIndex];
+            random = new Random();
+            randomIndex = random.Next(0, words.Length);
+            hiddenWord = words[randomIndex];
         }
         //Création du visuel du mot caché
         public void HideWord()
         {
-            for(int i=0 ; i<this.hiddenWord.Length ; i++)
+            for(int i=0 ; i<hiddenWord.Length ; i++)
             {
-                if(Char.IsWhiteSpace(this.hiddenWord[i]))
+                if(Char.IsWhiteSpace(hiddenWord[i]))
                 {
-                    this.response += "   ";
+                    response += " ";
                 }
                 else 
                 {
-                    this.response += "_ ";
+                    response += "_";
                 }
             }
         }
         //Verification si la lettre est presente dans le mot
         public void CheckAnswer()
         {
-            this.score = 6;
-            this.toggle = false;
-            this.win = false;
+            score = 6;
+            toggle = false;
+            win = false;
 
-            while(this.score != 0 || this.win == true)
+            while(score != 0)
             {
-                this.toggle = false;
-                Console.WriteLine("Tentatives restantes : " + this.score);
-                Console.WriteLine(this.response + "\n");
+                toggle = false;
+                Console.WriteLine("Tentatives restantes : " + score);
+                Console.WriteLine(response + "\n");
                 Console.WriteLine("Quelle lettre ?");
-                this.str = Console.ReadLine();
-                this.userInput = char.Parse(this.str);
+                str = Console.ReadLine();
+                userInput = char.Parse(str);
 
-                for(int i=0 ; i<this.hiddenWord.Length ; i++)
+                for(int i=0 ; i<hiddenWord.Length ; i++)
                 {         
-                    if(this.userInput == this.response[i])
+                    if(userInput == response[i])
                     {
                         continue;
                     }       
-                    if(this.hiddenWord[i] == this.userInput)
+                    if(hiddenWord[i] == this.userInput)
                     {
-                        this.toggle = true;
-                        this.temp = new StringBuilder(this.response);
-                        this.temp[i] = this.userInput;
-                        this.response = this.temp.ToString();
+                        toggle = true;
+                        temp = new StringBuilder(response);
+                        temp[i] = userInput;
+                        response = temp.ToString();
                         break;
                     }
                 }
                 //Affichage du résultat de la tentative
-                if(this.hiddenWord == this.response)
+                if(hiddenWord == response)
                 {
-                    this.win = true;
+                    win = true;
+                    break;
                 }
-                else if(this.toggle)
+                else if(toggle)
                 {
                     Console.WriteLine("Bien joué jeune homme !");
                 }
                 else 
                 {
                     Console.WriteLine("Raté ! Réessaye");
-                    this.score--;
+                    score--;
                 } 
             } 
         }
         //Vérifier le résultat et afficher le message finale
         public void CheckResult()
         {
-            if(this.win)
+            if(win)
             {
                 Console.WriteLine("Vous avez trouvé le mot !\n" + response);
             }

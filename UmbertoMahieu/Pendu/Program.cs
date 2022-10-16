@@ -1,8 +1,4 @@
-﻿// Variables globales
-
-int idx = 0;
-
-// Le jeu !
+﻿// Le jeu !
 
 pendu();
 
@@ -26,7 +22,7 @@ void pendu(){
 
     Console.WriteLine("------------------------------------------------");
     Console.WriteLine("Le jeu commence !");
-    for (int i = 0 ; i < 25 ; i++)
+    while (true)
     {
 
         Console.WriteLine("\nJoueur 2 : Testez une lettre ");
@@ -97,8 +93,7 @@ void initializeArr (char[] arr)
 {
     for (int x = 0 ; x < arr.Length ; x++)
     {
-        char code = '_';
-        arr[x] = code;
+        arr[x] = '_';
     }
 }
 
@@ -122,10 +117,15 @@ bool pushToArr (char l, char[] arr)
     {
         return false;
     }
-    arr[idx] = l;
-    idx++;
-
-    return true;
+    for (int i = 0 ; i < arr.Length ; i++)
+    {
+        if (arr[i] == '\0')
+        {
+            arr[i] = l;
+            return true;
+        }
+    }
+    return false;
 }
 
 void printArr (char [] arr)

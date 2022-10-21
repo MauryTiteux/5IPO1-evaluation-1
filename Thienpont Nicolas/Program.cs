@@ -3,32 +3,13 @@ using System.Collections.Generic;
 using System;
 using System.Text;
 
-
-
-/*
-// Interface de choix de la lettre à deviner !
-string[] tableauMot =new string[]{"nulite", "ordinal", "manger", "repas", "analyse"};
-Random rand = new Random();
-
-int index = rand.Next(tableauMot.Length);
-string mot= tableauMot[index];
-
-var listLettres = new ArrayList();
-var motADeviner = new ArrayList();
-
-for(int i=0;i<mot.Length;i++){
-    motADeviner.Add("- ");
-}
-
-Console.WriteLine("-------------------------------------");
-Console.WriteLine("Entrez la lettre à deviner :");
-Console.WriteLine("-------------------------------------");
-var entreeUtilisateur = Console.ReadLine();
-*/
 namespace JeuDuPendu
 {
     internal class Program
     {
+
+// Fonction permettant l'affichage du nombre d'erreur et du nombre d'essai restant pour le joueur.
+// Condition vérifier le nombre d'erreur et affichant le bon message en fonction        
         private static void AffichagePendu(int erreurs)
         {
             if(erreurs==0){
@@ -54,6 +35,8 @@ namespace JeuDuPendu
             }
         }
 
+
+
         private static int afficherMot(List<char>lettresADeviner, string motAleatoire){
             int compteur = 0;
             int bons = 0;
@@ -71,11 +54,44 @@ namespace JeuDuPendu
             }
             return bons;
         }
+
+
         private static void afficherLignes(string motAleatoire){
             Console.WriteLine("\r");
             foreach(char c in motAleatoire){
                 Console.OutputEncoding = System.Text.Encoding.Unicode;
                 Console.WriteLine("\u0305");
+            }
+        }
+
+
+
+        static void Main(string[] variable){
+            Console.WriteLine("JEU DU PENDU !");
+            Console.WriteLine("---------------------------------");
+            Random aleatoire = new Random();
+            List<string> dictionnaireDeMot = new List<string>{"maison", "manger","salut","accro","certain", "accord", "penal", "mechant", "or","hors"};
+            int index = aleatoire.Next(dictionnaireDeMot.Count);
+            string motAleatoire = dictionnaireDeMot[index];
+
+            foreach(char x in motAleatoire){
+                Console.WriteLine("_ ");
+            }
+
+
+
+            int longueurDuMot = motAleatoire.Length;
+            int nombreErreur = 0;
+            List<char> lettreDejaChoisie = new List<char>();
+            int nombreDeLettresBonnes = 0;
+
+
+
+            while(nombreErreur !=6 && nombreDeLettresBonnes != longueurDuMot){
+                Console.WriteLine("\nLettres choisies depuis le début : ");
+                foreach(char lettre in lettreDejaChoisie){
+                    Console.WriteLine(lettre + " ");
+                }
             }
         }
     }

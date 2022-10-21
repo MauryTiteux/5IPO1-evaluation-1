@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using System.Text;
+using static System.Random;
 
 namespace JeuDuPendu
 {
@@ -44,12 +45,12 @@ namespace JeuDuPendu
             Console.WriteLine("\r\n");
             foreach(char c in motAleatoire)
             {
-                if(lettresADeviner.Contains((c)){
-                    Console.WriteLine(c+" "); 
+                if(lettresADeviner.Contains((c))){
+                    Console.Write(c+" "); 
                     bons++;
                 }
                 else{
-                    Console.WriteLine(" ");
+                    Console.Write(" ");
                 }
                 compteur++;
             }
@@ -58,10 +59,10 @@ namespace JeuDuPendu
 
 // Fonction permettant d'afficher les tirets sous les lettres.
         private static void afficherLignes(string motAleatoire){
-            Console.WriteLine("\r");
+            Console.Write("\r");
             foreach(char c in motAleatoire){
                 Console.OutputEncoding = System.Text.Encoding.Unicode;
-                Console.WriteLine("\u0305");
+                Console.Write("\u0305 ");
             }
         }
 
@@ -77,7 +78,7 @@ namespace JeuDuPendu
             string motAleatoire = dictionnaireDeMot[index];
 
             foreach(char x in motAleatoire){
-                Console.WriteLine("_ ");
+                Console.Write("_ ");
             }
 
 
@@ -90,11 +91,58 @@ namespace JeuDuPendu
 
 // Vérification pour éviter que le jeu tourne en boucle.
             while(nombreErreur !=6 && nombreDeLettresBonnes != longueurDuMot){
-                Console.WriteLine("\nLettres choisies depuis le début : ");
+                Console.Write("\nLettres choisies depuis le début : ");
                 foreach(char lettre in lettreDejaChoisie){
-                    Console.WriteLine(lettre + " ");
+                    Console.Write(lettre + " ");
+                }
+
+// Entree utilisateur.
+
+                Console.Write("entrez votre lettre : ");
+                char lettreChoisie = Console.ReadLine()[0];
+
+
+// Verification si la lettre a déjà été donnée pendant la partie.
+
+                if(lettreDejaChoisie.Contains(lettreChoisie)){
+                    Console.Write("\r\nVous avez déjà choisi cette lettre !");
+                    AffichagePendu(nombreErreur);
+                    nombreDeLettresBonnes =afficherMot(lettreDejaChoisie, motAleatoire);
+                    afficherLignes(motAleatoire);
+                }
+                else{
+
+// Verification de si la lettre est bien dans le mot ou pas
+
+                    bool resultat = false;
+                    for(int i=0 ; i<longueurDuMot;i++){
+                        if(lettreChoisie==motAleatoire[i]){
+                            resultat= true;
+                        }
+                    }
+                    if(resultat){
+                        AffichagePendu(nombreErreur);
+                        lettreDejaChoisie.Add(lettreChoisie);
+                        nombreDeLettresBonnes = afficherMot(lettreDejaChoisie, motAleatoire);
+                        Console.Write("\r\n");
+                        afficherLignes(motAleatoire);
+                        }
+
+
+                    else{
+                        nombreErreur++;
+                        lettreDejaChoisie.Add(lettreChoisie);
+                        AffichagePendu(nombreErreur);
+                        nombreDeLettresBonnes = afficherMot(lettreDejaChoisie, motAleatoire);
+                        Console.Write("\r\n");
+                        afficherLignes(motAleatoire);
+
+                    }
                 }
             }
+            Console.WriteLine("\r\nLa partie est terminée ! Le mot était donc " + motAleatoire);
+
+
         }
     }
 }

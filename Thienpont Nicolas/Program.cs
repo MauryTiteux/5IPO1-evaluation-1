@@ -36,6 +36,7 @@ namespace JeuDuPendu
         }
 
 
+// Fonction initialisant les variables nécéssaires au bon fonctionnement du jeu.
 
         private static int afficherMot(List<char>lettresADeviner, string motAleatoire){
             int compteur = 0;
@@ -55,7 +56,7 @@ namespace JeuDuPendu
             return bons;
         }
 
-
+// Fonction permettant d'afficher les tirets sous les lettres.
         private static void afficherLignes(string motAleatoire){
             Console.WriteLine("\r");
             foreach(char c in motAleatoire){
@@ -65,7 +66,8 @@ namespace JeuDuPendu
         }
 
 
-
+// Initialisation du jeu et choix du mot parmi ceux dans le tableau via un random.
+// L'utilisation du random est spécial mais c'est mieux qu'en JS pour le coup.
         static void Main(string[] variable){
             Console.WriteLine("JEU DU PENDU !");
             Console.WriteLine("---------------------------------");
@@ -79,14 +81,14 @@ namespace JeuDuPendu
             }
 
 
-
+// Initialisation de variables et tableaux.
             int longueurDuMot = motAleatoire.Length;
             int nombreErreur = 0;
             List<char> lettreDejaChoisie = new List<char>();
             int nombreDeLettresBonnes = 0;
 
 
-
+// Vérification pour éviter que le jeu tourne en boucle.
             while(nombreErreur !=6 && nombreDeLettresBonnes != longueurDuMot){
                 Console.WriteLine("\nLettres choisies depuis le début : ");
                 foreach(char lettre in lettreDejaChoisie){
